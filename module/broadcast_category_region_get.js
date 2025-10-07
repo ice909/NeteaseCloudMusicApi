@@ -1,11 +1,11 @@
-// 每日推荐歌曲
+// 广播电台 - 分类/地区信息
 
 const createOption = require('../util/option.js')
 module.exports = (query, request) => {
   const data = {}
   return request(
-    `/api/v3/discovery/recommend/songs`,
+    `/api/voice/broadcast/category/region/get`,
     data,
-    createOption(query, 'weapi'),
+    createOption(query),
   )
 }

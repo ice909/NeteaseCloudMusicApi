@@ -13,7 +13,7 @@ module.exports = (query, request) => {
   let offset = parseInt(query.offset) || 0
 
   return request(`/api/v6/playlist/detail`, data, createOption(query)).then(
-    async (res) => {
+    (res) => {
       let trackIds = res.body.playlist.trackIds
       let idsData = {
         c:
@@ -24,28 +24,8 @@ module.exports = (query, request) => {
             .join(',') +
           ']',
       }
-      const response = await request(
-        `/api/v3/song/detail`,
-        idsData,
-        createOption(query),
-      )
-      const songs = []
-      for (const i of response.body.songs) {
-        const song = {}
-        song.id = i.id.toString()
-        song.name = i.name
-        song.pic = i.al.picUrl
-        song.ar = i.ar.map((item) => {
-          return {
-            name: item.name,
-          }
-        })
-        song.al = i.al.name
-        song.duration = i.dt
-        songs.push(song)
-      }
-      response.body.songs = songs
-      return response
+
+      return request(`/api/v3/song/detail`, idsData, createOption(query))
     },
   )
 }
